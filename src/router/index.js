@@ -198,6 +198,12 @@ export const constantRoutes = [
         component: () => import('@/views/components/FormGenerateDemo'),
         name: 'FromGenerate',
         meta: { title: '表单生成器', icon: 'form' }
+      },
+      {
+        path: 'text-tip',
+        component: () => import('@/views/components/TextTipDemo'),
+        name: 'TextTip',
+        meta: { title: '文字提示框', icon: 'el-icon-info' }
       }
     ]
   },
