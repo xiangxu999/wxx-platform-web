@@ -1,6 +1,6 @@
 <template>
   <div>
-    <svg-icon icon-class="github" @click="click" />
+    <svg-icon icon-class="github-icon" @click="click" />
   </div>
 </template>
 

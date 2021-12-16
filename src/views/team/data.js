@@ -39,7 +39,7 @@ const dataList = [{
   nickname: '旭日',
   qq: '846212939',
   email: '846212939@qq.com',
-  blog: 'https://www.xiangxu999.com'
+  blog: 'https://xiangxu999.com'
 }]
 
 export default dataList

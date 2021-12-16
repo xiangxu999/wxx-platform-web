@@ -142,7 +142,7 @@ export const constantRoutes = [
     component: Layout,
     children: [
       {
-        path: 'https://www.xiangxu999.com/',
+        path: 'https://xiangxu999.com/',
         meta: { title: '外链', icon: 'link' }
       }
     ]

@@ -19,6 +19,7 @@
 
 ### 2021-12-16
 
-- 平台集成表单生成器: [Variant Form](https://www.vform666.com/)
+- 平台集成表单生成器 [Variant Form](https://www.vform666.com/)
 - 新增文本提示框组件 `TextTip`
+- 平台集成邮箱工具（简单邮箱发送）
 
