@@ -1,5 +1,6 @@
 <template>
   <div class="icons-container">
+    <text-tip text="图标使用教程" link="https://juejin.cn/post/6844903517564436493" />
     <el-tabs type="border-card">
       <el-tab-pane label="Icons">
         <div class="grid">
@@ -39,9 +40,13 @@
 import clipboard from '@/utils/clipboard'
 import svgIcons from './svg-icons'
 import elementIcons from './element-icons'
+import TextTip from '@/components/TextTip'
 
 export default {
   name: 'Icons',
+  components: {
+    TextTip
+  },
   data() {
     return {
       svgIcons,

@@ -1,5 +1,5 @@
 <template>
-  <v-form-designer style="margin-left: 0;min-height: 100%;position: relative;"/>
+  <v-form-designer style="margin-left: 0;min-height: 100%;position: relative;" />
 </template>
 
 <script>

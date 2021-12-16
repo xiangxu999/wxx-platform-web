@@ -8,9 +8,7 @@
 
 <script>
 export default {
-  size() {
-    return this.$store.getters.size
-  }
+  name: 'Test'
 }
 </script>
 
