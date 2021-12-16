@@ -8,6 +8,9 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 // import locale from 'element-ui/lib/locale/lang/en' // lang i18n
 
+import VForm from 'vform-builds' // VForm
+import 'vform-builds/dist/VFormDesigner.css' // VForm css
+
 import '@/assets/styles/index.scss' // global css
 
 import App from './App'
@@ -17,16 +20,12 @@ import router from './router'
 import '@/assets/icons' // icon
 import '@/permission' // permission control
 import permission from '@/directive/permission'
-// import VueSocketIO from 'vue-socket.io'
 
 Vue.use(ElementUI, {
   size: Cookies.get('size') || 'mini'
 })
+Vue.use(VForm)
 Vue.directive('permission', permission)
-// Vue.use(new VueSocketIO({
-//   debug: true,
-//   connection: process.env.VUE_APP_BASE_API + '/notification'
-// }))
 
 Vue.config.productionTip = false
 

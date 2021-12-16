@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: 'Doc',
+  name: 'Github',
   methods: {
     click() {
       window.open('https://github.com/xiangxu999', '_blank')

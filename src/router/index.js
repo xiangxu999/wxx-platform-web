@@ -192,6 +192,12 @@ export const constantRoutes = [
         component: () => import('@/views/components/InfoCardDemo'),
         name: 'InfoCard',
         meta: { title: '信息卡片', icon: 'el-icon-postcard' }
+      },
+      {
+        path: 'form-generate',
+        component: () => import('@/views/components/FormGenerateDemo'),
+        name: 'FromGenerate',
+        meta: { title: '表单生成器', icon: 'form' }
       }
     ]
   },
