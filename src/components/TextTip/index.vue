@@ -5,7 +5,7 @@
     :style="{fontSize: fontSize + 'px', borderColor: borderColor, color: color, backgroundColor: backgroundColor, fontWeight: fontWeight ? 'bolder' : 'normal' }"
   >
     <slot name="preAppend" />
-    <span :class="{link: link !== ''}" @click="click">{{ text }}</span>
+    <span :class="{link: link !== ''}" @click="openLink">{{ text }}</span>
     <slot name="append" />
   </div>
 </template>
@@ -48,12 +48,16 @@ export default {
     link: {
       type: String,
       default: ''
+    },
+    hoverColor: {
+      type: String,
+      default: '#50bfff'
     }
   },
   methods: {
-    click() {
+    openLink() {
       if (this.link !== '') {
-        window.open(this.link)
+        window.open(this.link, '_blank')
       }
     }
   }
@@ -72,8 +76,8 @@ export default {
 .link {
   &:hover {
     cursor: pointer;
-    color: #50bfff;
     text-decoration:underline;
+    color: #50bfff;
   }
 }
 
