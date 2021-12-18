@@ -134,7 +134,7 @@
 
 <script>
 import GithubCorner from '@/components/GithubCorner'
-import updateLogs from '@/views/login/updateLog'
+import updateLogs from '@/views/dashboard/updateLog'
 
 export default {
   name: 'Dashboard',
