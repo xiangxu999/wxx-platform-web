@@ -18,7 +18,7 @@ import store from './store'
 import router from './router'
 
 import '@/assets/icons' // icon
-import '@/permission' // permission control
+import '@/router/permission' // permission control
 import permission from '@/directive/permission'
 
 Vue.use(ElementUI, {
