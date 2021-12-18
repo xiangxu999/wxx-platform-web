@@ -26,7 +26,7 @@
         <el-switch v-model="fontWeight" />
       </el-form-item>
       <el-form-item label="链接">
-        <el-input v-model="link" placeholder="请输入链接" clearable style="width: 300px"/>
+        <el-input v-model="link" placeholder="请输入链接" clearable style="width: 300px" />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="reset">重置</el-button>
