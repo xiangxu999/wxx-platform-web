@@ -1,99 +1,83 @@
-<!--登录页面-->
 <template>
-  <div class="login-container">
-    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
-
-      <div class="title-container">
-        <h3 class="title">工 作 平 台</h3>
-      </div>
-
+  <div class="login" :style="'background-image:url('+ Background +');'">
+    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" label-position="left" label-width="0px" class="login-form">
+      <h3 class="title">个人工作平台</h3>
       <el-form-item prop="username">
-        <span class="svg-container">
-          <svg-icon icon-class="user" />
-        </span>
-        <el-input
-          ref="username"
-          v-model="loginForm.username"
-          placeholder="Username"
-          name="username"
-          type="text"
-          tabindex="1"
-          auto-complete="on"
-        />
+        <el-input v-model="loginForm.username" type="text" auto-complete="off" placeholder="账号">
+          <svg-icon slot="prefix" icon-class="user" class="el-input__icon input-icon" />
+        </el-input>
       </el-form-item>
-
       <el-form-item prop="password">
-        <span class="svg-container">
-          <svg-icon icon-class="password" />
-        </span>
-        <el-input
-          :key="passwordType"
-          ref="password"
-          v-model="loginForm.password"
-          :type="passwordType"
-          placeholder="Password"
-          name="password"
-          tabindex="2"
-          auto-complete="on"
-          @keyup.enter.native="handleLogin"
-        />
-        <span class="show-pwd" @click="showPwd">
-          <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
-        </span>
+        <el-input ref="password" v-model="loginForm.password" :type="passwordType" auto-complete="off" placeholder="密码" @keyup.enter.native="handleLogin">
+          <svg-icon slot="prefix" icon-class="password" class="el-input__icon input-icon" />
+          <svg-icon slot="suffix" :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" class="el-input__icon input-icon show-pwd" @click="showPwd" />
+        </el-input>
       </el-form-item>
-
-      <el-button size="default" :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
-
-      <div class="tips">
-        <span style="margin-right:20px;">username: admin</span>
-        <span> password: any</span>
-      </div>
-
+      <el-checkbox v-model="loginForm.rememberMe" style="margin:0 0 25px 0;">
+        记住我
+      </el-checkbox>
+      <el-form-item style="width:100%;">
+        <el-button :loading="loading" size="medium" type="primary" style="width:100%;" @click.native.prevent="handleLogin">
+          <span v-if="!loading">登 录</span>
+          <span v-else>登 录 中...</span>
+        </el-button>
+      </el-form-item>
     </el-form>
+    <!--  底部  -->
+    <div v-if="$store.state.settings.showFooter" id="el-login-footer">
+      <span v-html="$store.state.settings.footerTxt" />
+      <span> ⋅ </span>
+      <a href="https://beian.miit.gov.cn/#/Integrated/index" target="_blank">{{ $store.state.settings.caseNumber }}</a>
+    </div>
   </div>
 </template>
 
 <script>
-// import { validUsername } from '@/utils/validate'
-
+import Config from '@/settings'
+import Cookies from 'js-cookie'
+import qs from 'qs'
+import md5 from 'js-md5'
+import Background from '@/assets/images/background.jpg'
 export default {
   name: 'Login',
   data() {
-    // const validateUsername = (rule, value, callback) => {
-    //   if (!validUsername(value)) {
-    //     callback(new Error('Please enter the correct user name'))
-    //   } else {
-    //     callback()
-    //   }
-    // }
-    const validatePassword = (rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error('The password can not be less than 6 digits'))
-      } else {
-        callback()
-      }
-    }
     return {
+      Background: Background,
+      passwordType: 'password',
       loginForm: {
-        username: 'admin',
-        password: '111111'
+        username: '',
+        password: '',
+        rememberMe: false
       },
       loginRules: {
-        // username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+        username: [{ required: true, trigger: 'blur', message: '用户名不能为空' }],
+        password: [{ required: true, trigger: 'blur', message: '密码不能为空' }],
+        code: [{ required: true, trigger: 'change', message: '验证码不能为空' }]
       },
       loading: false,
-      passwordType: 'password',
       redirect: undefined
     }
   },
   watch: {
     $route: {
       handler: function(route) {
-        this.redirect = route.query && route.query.redirect
+        const data = route.query
+        if (data && data.redirect) {
+          this.redirect = data.redirect
+          delete data.redirect
+          if (JSON.stringify(data) !== '{}') {
+            this.redirect = this.redirect + '&' + qs.stringify(data, { indices: false })
+          }
+        }
       },
       immediate: true
     }
+  },
+  created() {
+    // 获取是否记住的状态
+    this.getCookie()
+    // token 过期提示
+    this.point()
   },
   methods: {
     showPwd() {
@@ -106,13 +90,31 @@ export default {
         this.$refs.password.focus()
       })
     },
+    getCookie() {
+      const rememberMe = Cookies.get('rememberMe')
+      // 这边账号和密码不保存
+      this.loginForm = {
+        rememberMe: rememberMe === undefined ? false : Boolean(rememberMe)
+      }
+    },
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
+        const user = {
+          username: this.loginForm.username,
+          // 加密
+          password: md5(this.loginForm.password),
+          rememberMe: this.loginForm.rememberMe
+        }
         if (valid) {
+          if (user.rememberMe) {
+            Cookies.set('rememberMe', user.rememberMe, { expires: Config.passCookieExpires })
+          } else {
+            Cookies.remove('rememberMe')
+          }
           this.loading = true
-          this.$store.dispatch('user/login', this.loginForm).then(() => {
-            this.$router.push({ path: this.redirect || '/' })
+          this.$store.dispatch('user/login', user).then(() => {
             this.loading = false
+            this.$router.push({ path: this.redirect || '/' })
           }).catch(() => {
             this.loading = false
           })
@@ -121,118 +123,91 @@ export default {
           return false
         }
       })
+    },
+    point() {
+      const point = Cookies.get('point') !== undefined
+      if (point) {
+        this.$notify({
+          title: '提示',
+          message: '当前登录状态已过期，请重新登录！',
+          type: 'warning',
+          duration: 5000
+        })
+        Cookies.remove('point')
+      }
     }
   }
 }
 </script>
 
-<style lang="scss">
-/* 修复input 背景不协调 和光标变色 */
-/* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
-
-$bg:#283443;
-$light_gray:#fff;
-$cursor: #fff;
-
-@supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
-  .login-container .el-input input {
-    color: $cursor;
+<style rel="stylesheet/scss" lang="scss">
+// 修复变色问题
+input {
+  //caret-color: #fff !important;
+  &:-webkit-autofill {
+    box-shadow: 0 0 0 1000px #fff inset !important;
   }
 }
-
-/* reset element-ui css */
-.login-container {
-  .el-input {
-    display: inline-block;
-    height: 47px;
-    width: 85%;
-
-    input {
-      background: transparent;
-      border: 0px;
-      -webkit-appearance: none;
-      border-radius: 0px;
-      padding: 12px 5px 12px 15px;
-      color: $light_gray;
-      height: 47px;
-      caret-color: $cursor;
-
-      &:-webkit-autofill {
-        box-shadow: 0 0 0px 1000px $bg inset !important;
-        -webkit-text-fill-color: $cursor !important;
-      }
-    }
-  }
-
-  .el-form-item {
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-    color: #454545;
-  }
-}
-</style>
-
-<style lang="scss" scoped>
-$bg:#2d3a4b;
-$dark_gray:#889aa4;
-$light_gray:#eee;
-
-.login-container {
-  min-height: 100%;
+#el-login-footer {
+  height: 40px;
+  line-height: 40px;
+  position: fixed;
+  bottom: 0;
   width: 100%;
-  background-color: $bg;
-  overflow: hidden;
+  text-align: center;
+  color: #fff;
+  font-family: Arial, serif;
+  font-size: 12px;
+  letter-spacing: 1px;
+}
+.show-pwd {
+  right: 10px;
+  font-size: 16px;
+  color: #889aa4;
+  cursor: pointer;
+  user-select: none;
+}
+.login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  background-size: cover;
+}
+.title {
+  margin: 0 auto 30px auto;
+  text-align: center;
+  color: #707070;
+}
 
-  .login-form {
-    position: relative;
-    width: 520px;
-    max-width: 100%;
-    padding: 160px 35px 0;
-    margin: 0 auto;
-    overflow: hidden;
-  }
-
-  .tips {
-    font-size: 14px;
-    color: #fff;
-    margin-bottom: 10px;
-
-    span {
-      &:first-of-type {
-        margin-right: 16px;
-      }
+.login-form {
+  border-radius: 6px;
+  background: #ffffff;
+  width: 385px;
+  padding: 25px 25px 5px 25px;
+  .el-input {
+    height: 38px;
+    input {
+      height: 38px;
     }
   }
-
-  .svg-container {
-    padding: 6px 5px 6px 15px;
-    color: $dark_gray;
-    vertical-align: middle;
-    width: 30px;
-    display: inline-block;
+  .input-icon{
+    height: 39px;width: 14px;margin-left: 2px;
   }
-
-  .title-container {
-    position: relative;
-
-    .title {
-      font-size: 26px;
-      color: $light_gray;
-      margin: 0px auto 40px auto;
-      text-align: center;
-      font-weight: bold;
-    }
-  }
-
-  .show-pwd {
-    position: absolute;
-    right: 10px;
-    top: 7px;
-    font-size: 16px;
-    color: $dark_gray;
+}
+.login-tip {
+  font-size: 13px;
+  text-align: center;
+  color: #bfbfbf;
+}
+.login-code {
+  width: 33%;
+  display: inline-block;
+  height: 38px;
+  float: right;
+  img{
     cursor: pointer;
-    user-select: none;
+    vertical-align:middle
   }
 }
 </style>
