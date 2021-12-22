@@ -12,9 +12,7 @@ const getDefaultState = () => {
     // 账户创建时间
     created: '',
     // 权限角色
-    role: [],
-    // 侧边栏
-    nav: ''
+    role: []
   }
 }
 
@@ -32,6 +30,9 @@ const mutations = {
   },
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
+  },
+  SET_CREATED: (state, created) => {
+    state.created = created
   },
   SET_ROLE: (state, role) => {
     state.role = role.split(',')
@@ -62,10 +63,11 @@ const actions = {
         if (!data) {
           return reject('Verification failed, please Login again.')
         }
-        const { username, avatar, role } = data
+        const { username, avatar, role, created } = data
         commit('SET_USERNAME', username)
         commit('SET_AVATAR', avatar)
         commit('SET_ROLE', role)
+        commit('SET_CREATED', created)
         resolve(data)
       }).catch(error => {
         reject(error)

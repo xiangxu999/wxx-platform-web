@@ -313,8 +313,8 @@ export default {
       return sysFilesTotal
     }
   },
-  created() {
-    this.initServer()
+  async created() {
+    await this.initServer()
     this.monitor = window.setInterval(() => {
       setTimeout(() => {
         this.initServer()

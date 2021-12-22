@@ -17,7 +17,7 @@
         记住我
       </el-checkbox>
       <el-form-item style="width:100%;">
-        <el-button :loading="loading" size="medium" type="primary" style="width:100%;" @click.native.prevent="handleLogin">
+        <el-button :loading="loading" size="medium" type="primary" style="width:100%;" @click.native.prevent="useVerify()">
           <span v-if="!loading">登 录</span>
           <span v-else>登 录 中...</span>
         </el-button>
@@ -29,6 +29,15 @@
       <span> ⋅ </span>
       <a href="https://beian.miit.gov.cn/#/Integrated/index" target="_blank">{{ $store.state.settings.caseNumber }}</a>
     </div>
+
+    <!-- 验证码部分 -->
+    <Verify
+      ref="verify"
+      mode="pop"
+      captcha-type="blockPuzzle"
+      :img-size="{ width: '330px', height: '155px' }"
+      @success="success"
+    />
   </div>
 </template>
 
@@ -38,8 +47,12 @@ import Cookies from 'js-cookie'
 import qs from 'qs'
 import md5 from 'js-md5'
 import Background from '@/assets/images/background.jpg'
+import Verify from '@/components/Verifition'
 export default {
   name: 'Login',
+  components: {
+    Verify
+  },
   data() {
     return {
       Background: Background,
@@ -80,6 +93,13 @@ export default {
     this.point()
   },
   methods: {
+    success(params) {
+      // params 返回的二次验证参数, 和登录参数一起回传给登录接口，方便后台进行二次验证
+      this.handleLogin()
+    },
+    useVerify() {
+      this.$refs.verify.show()
+    },
     showPwd() {
       if (this.passwordType === 'password') {
         this.passwordType = ''
@@ -177,12 +197,12 @@ input {
 .title {
   margin: 0 auto 30px auto;
   text-align: center;
-  color: #707070;
+  color: #fff;
 }
 
 .login-form {
   border-radius: 6px;
-  background: #ffffff;
+  background: rgba(0,0,0,.5);
   width: 385px;
   padding: 25px 25px 5px 25px;
   .el-input {
@@ -193,21 +213,6 @@ input {
   }
   .input-icon{
     height: 39px;width: 14px;margin-left: 2px;
-  }
-}
-.login-tip {
-  font-size: 13px;
-  text-align: center;
-  color: #bfbfbf;
-}
-.login-code {
-  width: 33%;
-  display: inline-block;
-  height: 38px;
-  float: right;
-  img{
-    cursor: pointer;
-    vertical-align:middle
   }
 }
 </style>
