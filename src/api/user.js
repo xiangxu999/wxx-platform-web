@@ -22,3 +22,10 @@ export function logout() {
     method: 'post'
   })
 }
+
+export function getCodeImg() {
+  return request({
+    url: '/user/code',
+    method: 'get'
+  })
+}

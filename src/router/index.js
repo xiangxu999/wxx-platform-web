@@ -222,6 +222,12 @@ export const constantRoutes = [
         component: () => import('@/views/components/TextTipDemo'),
         name: 'TextTip',
         meta: { title: '文字提示框', icon: 'el-icon-info' }
+      },
+      {
+        path: 'verification-captcha',
+        component: () => import('@/views/components/VerificationCaptchaDemo'),
+        name: 'VerificationCaptcha',
+        meta: { title: '滑块验证码', icon: 'validCode' }
       }
     ]
   }

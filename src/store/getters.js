@@ -9,6 +9,8 @@ const getters = {
   username: state => state.user.username,
   role: state => state.user.role,
   addRouters: state => state.permission.addRouters,
-  routers: state => state.permission.routers
+  routers: state => state.permission.routers,
+  druidApi: state => state.api.druidApi,
+  swaggerApi: state => state.api.swaggerApi
 }
 export default getters
