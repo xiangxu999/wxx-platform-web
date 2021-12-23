@@ -13,11 +13,19 @@
           <svg-icon slot="suffix" :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" class="el-input__icon input-icon show-pwd" @click="showPwd" />
         </el-input>
       </el-form-item>
+      <el-form-item v-if="codeEnabled" prop="code">
+        <el-input v-model="loginForm.code" auto-complete="off" placeholder="验证码" style="width: 63%" @keyup.enter.native="handleLogin">
+          <svg-icon slot="prefix" icon-class="validCode" class="el-input__icon input-icon" />
+        </el-input>
+        <div class="login-code">
+          <img :src="codeUrl" @click="getCode">
+        </div>
+      </el-form-item>
       <el-checkbox v-model="loginForm.rememberMe" style="margin:0 0 25px 0;">
         记住我
       </el-checkbox>
       <el-form-item style="width:100%;">
-        <el-button :loading="loading" size="medium" type="primary" style="width:100%;" @click.native.prevent="useVerify()">
+        <el-button :loading="loading" size="medium" type="primary" style="width:100%;" @click.native.prevent="handleLogin">
           <span v-if="!loading">登 录</span>
           <span v-else>登 录 中...</span>
         </el-button>
@@ -30,14 +38,14 @@
       <a href="https://beian.miit.gov.cn/#/Integrated/index" target="_blank">{{ $store.state.settings.caseNumber }}</a>
     </div>
 
-    <!-- 验证码部分 -->
-    <Verify
-      ref="verify"
-      mode="pop"
-      captcha-type="blockPuzzle"
-      :img-size="{ width: '330px', height: '155px' }"
-      @success="success"
-    />
+    <!--&lt;!&ndash; 验证码部分 &ndash;&gt;-->
+    <!--<Verify-->
+    <!--  ref="verify"-->
+    <!--  mode="pop"-->
+    <!--  captcha-type="blockPuzzle"-->
+    <!--  :img-size="{ width: '330px', height: '155px' }"-->
+    <!--  @success="success"-->
+    <!--/>-->
   </div>
 </template>
 
@@ -47,20 +55,20 @@ import Cookies from 'js-cookie'
 import qs from 'qs'
 import md5 from 'js-md5'
 import Background from '@/assets/images/background.jpg'
-import Verify from '@/components/Verifition'
+import { getCodeImg } from '@/api/user'
 export default {
   name: 'Login',
-  components: {
-    Verify
-  },
   data() {
     return {
       Background: Background,
+      codeUrl: '',
       passwordType: 'password',
       loginForm: {
         username: '',
         password: '',
-        rememberMe: false
+        rememberMe: false,
+        uuid: '',
+        code: ''
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', message: '用户名不能为空' }],
@@ -68,7 +76,8 @@ export default {
         code: [{ required: true, trigger: 'change', message: '验证码不能为空' }]
       },
       loading: false,
-      redirect: undefined
+      redirect: undefined,
+      codeEnabled: false
     }
   },
   watch: {
@@ -87,18 +96,24 @@ export default {
     }
   },
   created() {
+    // 获取验证码
+    this.getCode()
     // 获取是否记住的状态
     this.getCookie()
     // token 过期提示
     this.point()
   },
   methods: {
-    success(params) {
-      // params 返回的二次验证参数, 和登录参数一起回传给登录接口，方便后台进行二次验证
-      this.handleLogin()
-    },
-    useVerify() {
-      this.$refs.verify.show()
+    getCode() {
+      getCodeImg().then(res => {
+        if (res.data.enabled === 0) {
+          this.codeEnabled = false
+          return
+        }
+        this.codeEnabled = true
+        this.codeUrl = res.data.img
+        this.loginForm.uuid = res.data.uuid
+      })
     },
     showPwd() {
       if (this.passwordType === 'password') {
@@ -123,7 +138,9 @@ export default {
           username: this.loginForm.username,
           // 加密
           password: md5(this.loginForm.password),
-          rememberMe: this.loginForm.rememberMe
+          rememberMe: this.loginForm.rememberMe,
+          code: this.loginForm.code,
+          uuid: this.loginForm.uuid
         }
         if (valid) {
           if (user.rememberMe) {
@@ -198,6 +215,16 @@ input {
   margin: 0 auto 30px auto;
   text-align: center;
   color: #fff;
+}
+.login-code {
+  width: 33%;
+  display: inline-block;
+  height: 38px;
+  float: right;
+  img{
+    cursor: pointer;
+    vertical-align:middle
+  }
 }
 
 .login-form {
