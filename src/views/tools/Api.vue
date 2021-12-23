@@ -1,15 +1,18 @@
 <!--swagger文档-->
 <template>
-  <iframe :src="src" :style="'height:'+ height" style="width: 100%" />
+  <Iframe :src="swaggerApi" />
 </template>
+
 <script>
+import Iframe from '@/components/Iframe'
+import { mapGetters } from 'vuex'
 export default {
   name: 'SysApi',
-  data() {
-    return {
-      src: process.env.VUE_APP_BASE_API + '/swagger-ui/',
-      height: document.documentElement.clientHeight + 'px;'
-    }
+  components: { Iframe },
+  computed: {
+    ...mapGetters([
+      'swaggerApi'
+    ])
   }
 }
 </script>
