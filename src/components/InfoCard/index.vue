@@ -13,6 +13,7 @@
       <ul class="user-info">
         <li><svg-icon icon-class="account" /> 用户姓名<div class="user-right">{{ username }}</div></li>
         <li><svg-icon icon-class="user" /> 用户昵称 <div class="user-right">{{ nickname }}</div></li>
+        <li><svg-icon icon-class="birthday" /> 用户生日 <div class="user-right">{{ birthday }}</div></li>
         <li><svg-icon icon-class="qq" /> 用户QQ <div class="user-right">{{ qq }}</div></li>
         <li><svg-icon icon-class="email" /> 用户邮箱 <div class="user-right">{{ email }}</div></li>
         <li><svg-icon icon-class="guide" /> 博客地址<div class="user-right"><a @click="openBlog">{{ blog }}</a></div></li>
@@ -34,6 +35,10 @@ export default {
       default: ''
     },
     nickname: {
+      type: String,
+      default: ''
+    },
+    birthday: {
       type: String,
       default: ''
     },
