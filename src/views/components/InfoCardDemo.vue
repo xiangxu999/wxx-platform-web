@@ -5,6 +5,7 @@
       :img="img"
       :username="username"
       :nickname="nickname"
+      :birthday="birthday"
       :qq="qq"
       :email="email"
       :blog="blog"
@@ -24,10 +25,10 @@ export default {
       img: 'https://cdn.lixingyong.com/2021/01/15/QQ20210115152209.jpg?imageView2/1/w/80/h/80',
       username: '文享旭',
       nickname: '旭日',
+      birthday: '1998-10-24',
       qq: '846212939',
       email: '846212939@qq.com',
       blog: 'https://xiangxu999.com'
-
     }
   }
 }

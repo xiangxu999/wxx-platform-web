@@ -17,7 +17,8 @@ export default {
     /** 提示文本 */
     text: {
       type: String,
-      default: ''
+      default: '',
+      required: true
     },
     /** 字体大小 */
     fontSize: {
