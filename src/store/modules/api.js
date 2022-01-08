@@ -9,7 +9,7 @@ const api = {
     /**
      * swagger
      */
-    swaggerApi: baseUrl + '/swagger-ui/',
+    swaggerApi: baseUrl + '/doc.html',
     // baseUrl，
     baseApi: baseUrl
   }

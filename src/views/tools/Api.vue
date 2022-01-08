@@ -1,14 +1,19 @@
 <!--swagger文档-->
 <template>
-  <Iframe :src="swaggerApi" />
+  <div class="app-container">
+    <text-tip text="接口文档" :link="swaggerApi"></text-tip>
+    <div class="code">
+      # 相关账号和密码请咨询负责人<br>
+    </div>
+  </div>
 </template>
 
 <script>
-import Iframe from '@/components/Iframe'
+import TextTip from '@/components/TextTip'
 import { mapGetters } from 'vuex'
 export default {
   name: 'SysApi',
-  components: { Iframe },
+  components: { TextTip },
   computed: {
     ...mapGetters([
       'swaggerApi'
@@ -16,3 +21,14 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+.code{
+  position: relative;
+  padding: 15px;
+  line-height: 20px;
+  border-left: 5px solid #ddd;
+  color: #333;
+  font-family: Courier New, serif;
+  font-size: 12px
+}
+</style>
