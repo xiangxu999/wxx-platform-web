@@ -303,7 +303,6 @@ export default {
       this.roleDialogFormVisible = true
 
       userInfo(userId).then(res => {
-        console.log(res)
         this.roleForm = res.data
 
         const roleIds = []

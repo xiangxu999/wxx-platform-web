@@ -314,7 +314,7 @@ export default {
     }
   },
   async created() {
-    await this.initServer()
+    this.initServer()
     this.monitor = window.setInterval(() => {
       setTimeout(() => {
         this.initServer()

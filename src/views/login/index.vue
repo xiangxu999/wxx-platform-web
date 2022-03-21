@@ -55,7 +55,7 @@ import Cookies from 'js-cookie'
 import qs from 'qs'
 import md5 from 'js-md5'
 import Background from '@/assets/images/background.jpg'
-import { getCodeImg } from '@/api/user'
+import { getCodeImg } from '@/api/auth'
 export default {
   name: 'Login',
   data() {

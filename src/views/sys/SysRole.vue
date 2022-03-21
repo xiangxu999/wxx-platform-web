@@ -288,7 +288,6 @@ export default {
       this.permDialogVisible = true
 
       perm(id).then(res => {
-        console.log(res)
         this.$refs.permTree.setCheckedKeys(res.data.menuIds)
         this.permForm = res.data
         console.log(this.permForm)
