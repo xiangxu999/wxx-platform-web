@@ -1,31 +1,79 @@
 <template>
-  <div class="login" :style="'background-image:url('+ Background +');'">
-    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" label-position="left" label-width="0px" class="login-form">
+  <div class="login" :style="'background-image:url(' + Background + ');'">
+    <el-form
+      ref="loginForm"
+      :model="loginForm"
+      :rules="loginRules"
+      label-position="left"
+      label-width="0px"
+      class="login-form"
+    >
       <h3 class="title">个人工作平台</h3>
       <el-form-item prop="username">
-        <el-input v-model="loginForm.username" type="text" auto-complete="off" placeholder="账号">
-          <svg-icon slot="prefix" icon-class="user" class="el-input__icon input-icon" />
+        <el-input
+          v-model="loginForm.username"
+          type="text"
+          auto-complete="off"
+          placeholder="账号"
+        >
+          <svg-icon
+            slot="prefix"
+            icon-class="user"
+            class="el-input__icon input-icon"
+          />
         </el-input>
       </el-form-item>
       <el-form-item prop="password">
-        <el-input ref="password" v-model="loginForm.password" :type="passwordType" auto-complete="off" placeholder="密码" @keyup.enter.native="handleLogin">
-          <svg-icon slot="prefix" icon-class="password" class="el-input__icon input-icon" />
-          <svg-icon slot="suffix" :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" class="el-input__icon input-icon show-pwd" @click="showPwd" />
+        <el-input
+          ref="password"
+          v-model="loginForm.password"
+          :type="passwordType"
+          auto-complete="off"
+          placeholder="密码"
+          @keyup.enter.native="handleLogin"
+        >
+          <svg-icon
+            slot="prefix"
+            icon-class="password"
+            class="el-input__icon input-icon"
+          />
+          <svg-icon
+            slot="suffix"
+            :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'"
+            class="el-input__icon input-icon show-pwd"
+            @click="showPwd"
+          />
         </el-input>
       </el-form-item>
       <el-form-item v-if="codeEnabled" prop="code">
-        <el-input v-model="loginForm.code" auto-complete="off" placeholder="验证码" style="width: 63%" @keyup.enter.native="handleLogin">
-          <svg-icon slot="prefix" icon-class="validCode" class="el-input__icon input-icon" />
+        <el-input
+          v-model="loginForm.code"
+          auto-complete="off"
+          placeholder="验证码"
+          style="width: 63%"
+          @keyup.enter.native="handleLogin"
+        >
+          <svg-icon
+            slot="prefix"
+            icon-class="validCode"
+            class="el-input__icon input-icon"
+          />
         </el-input>
         <div class="login-code">
           <img :src="codeUrl" @click="getCode">
         </div>
       </el-form-item>
-      <el-checkbox v-model="loginForm.rememberMe" style="margin:0 0 25px 0;">
+      <el-checkbox v-model="loginForm.rememberMe" style="margin: 0 0 25px 0">
         记住我
       </el-checkbox>
-      <el-form-item style="width:100%;">
-        <el-button :loading="loading" size="medium" type="primary" style="width:100%;" @click.native.prevent="handleLogin">
+      <el-form-item style="width: 100%">
+        <el-button
+          :loading="loading"
+          size="medium"
+          type="primary"
+          style="width: 100%"
+          @click.native.prevent="handleLogin"
+        >
           <span v-if="!loading">登 录</span>
           <span v-else>登 录 中...</span>
         </el-button>
@@ -35,17 +83,10 @@
     <div v-if="$store.state.settings.showFooter" id="el-login-footer">
       <span v-html="$store.state.settings.footerTxt" />
       <span> ⋅ </span>
-      <a href="https://beian.miit.gov.cn/#/Integrated/index" target="_blank">{{ $store.state.settings.caseNumber }}</a>
+      <a href="https://beian.miit.gov.cn/#/Integrated/index" target="_blank">{{
+        $store.state.settings.caseNumber
+      }}</a>
     </div>
-
-    <!--&lt;!&ndash; 验证码部分 &ndash;&gt;-->
-    <!--<Verify-->
-    <!--  ref="verify"-->
-    <!--  mode="pop"-->
-    <!--  captcha-type="blockPuzzle"-->
-    <!--  :img-size="{ width: '330px', height: '155px' }"-->
-    <!--  @success="success"-->
-    <!--/>-->
   </div>
 </template>
 
@@ -71,9 +112,15 @@ export default {
         code: ''
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur', message: '用户名不能为空' }],
-        password: [{ required: true, trigger: 'blur', message: '密码不能为空' }],
-        code: [{ required: true, trigger: 'change', message: '验证码不能为空' }]
+        username: [
+          { required: true, trigger: 'blur', message: '用户名不能为空' }
+        ],
+        password: [
+          { required: true, trigger: 'blur', message: '密码不能为空' }
+        ],
+        code: [
+          { required: true, trigger: 'change', message: '验证码不能为空' }
+        ]
       },
       loading: false,
       redirect: undefined,
@@ -88,7 +135,8 @@ export default {
           this.redirect = data.redirect
           delete data.redirect
           if (JSON.stringify(data) !== '{}') {
-            this.redirect = this.redirect + '&' + qs.stringify(data, { indices: false })
+            this.redirect =
+              this.redirect + '&' + qs.stringify(data, { indices: false })
           }
         }
       },
@@ -105,7 +153,7 @@ export default {
   },
   methods: {
     getCode() {
-      getCodeImg().then(res => {
+      getCodeImg().then((res) => {
         if (res.data.enabled === 0) {
           this.codeEnabled = false
           return
@@ -127,13 +175,13 @@ export default {
     },
     getCookie() {
       const rememberMe = Cookies.get('rememberMe')
-      // 这边账号和密码不保存
+      // 账号和密码不保存
       this.loginForm = {
         rememberMe: rememberMe === undefined ? false : Boolean(rememberMe)
       }
     },
     handleLogin() {
-      this.$refs.loginForm.validate(valid => {
+      this.$refs.loginForm.validate((valid) => {
         const user = {
           username: this.loginForm.username,
           // 加密
@@ -144,17 +192,22 @@ export default {
         }
         if (valid) {
           if (user.rememberMe) {
-            Cookies.set('rememberMe', user.rememberMe, { expires: Config.passCookieExpires })
+            Cookies.set('rememberMe', user.rememberMe, {
+              expires: Config.passCookieExpires
+            })
           } else {
             Cookies.remove('rememberMe')
           }
           this.loading = true
-          this.$store.dispatch('user/login', user).then(() => {
-            this.loading = false
-            this.$router.push({ path: this.redirect || '/' })
-          }).catch(() => {
-            this.loading = false
-          })
+          this.$store
+            .dispatch('user/login', user)
+            .then(() => {
+              this.loading = false
+              this.$router.push({ path: this.redirect || '/' })
+            })
+            .catch(() => {
+              this.loading = false
+            })
         } else {
           console.log('error submit!!')
           return false
@@ -221,15 +274,15 @@ input {
   display: inline-block;
   height: 38px;
   float: right;
-  img{
+  img {
     cursor: pointer;
-    vertical-align:middle
+    vertical-align: middle;
   }
 }
 
 .login-form {
   border-radius: 6px;
-  background: rgba(0,0,0,.5);
+  background: rgba(0, 0, 0, 0.5);
   width: 385px;
   padding: 25px 25px 5px 25px;
   .el-input {
@@ -238,8 +291,10 @@ input {
       height: 38px;
     }
   }
-  .input-icon{
-    height: 39px;width: 14px;margin-left: 2px;
+  .input-icon {
+    height: 39px;
+    width: 14px;
+    margin-left: 2px;
   }
 }
 </style>

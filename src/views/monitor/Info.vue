@@ -36,6 +36,7 @@
 <script>
 import { logList } from '@/api/sys/SysLog'
 import Pagination from '@/components/Pagination'
+
 export default {
   name: 'Info',
   components: {

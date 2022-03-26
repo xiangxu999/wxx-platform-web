@@ -1,5 +1,7 @@
 <template>
-  <div>数字字典</div>
+  <div>
+    数字字典
+  </div>
 </template>
 
 <script>
@@ -9,5 +11,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

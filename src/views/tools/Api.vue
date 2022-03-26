@@ -1,7 +1,7 @@
 <!--swagger文档-->
 <template>
   <div class="app-container">
-    <text-tip text="接口文档" :link="swaggerApi"></text-tip>
+    <text-tip text="接口文档" :link="swaggerApi" />
     <div class="code">
       # 相关账号和密码请咨询负责人<br>
     </div>
