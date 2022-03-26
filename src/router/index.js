@@ -62,132 +62,27 @@ export const constantRoutes = [
     path: '/user',
     component: Layout,
     hidden: true,
-    redirect: 'noredirect',
+    redirect: 'noRedirect',
     children: [
       {
         path: 'center',
         component: () => import('@/views/sys/UserCenter'),
-        name: '个人中心',
+        name: 'center',
         meta: { title: '个人中心' }
       }
     ]
   },
+
   {
     path: '/',
     component: Layout,
     redirect: '/dashboard',
-    children: [{
-      path: 'dashboard',
-      name: 'Dashboard',
-      component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard', affix: true }
-    }]
-  },
-  {
-    path: '/form',
-    component: Layout,
     children: [
       {
-        path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' }
-      }
-    ]
-  },
-
-  {
-    path: '/nested',
-    component: Layout,
-    redirect: '/nested/menu1',
-    name: 'Nested',
-    meta: {
-      title: 'Nested',
-      icon: 'nested'
-    },
-    children: [
-      {
-        path: 'menu1',
-        component: () => import('@/views/nested/menu1/index'), // Parent router-view
-        name: 'Menu1',
-        meta: { title: 'Menu1' },
-        children: [
-          {
-            path: 'menu1-1',
-            component: () => import('@/views/nested/menu1/menu1-1'),
-            name: 'Menu1-1',
-            meta: { title: 'Menu1-1' }
-          },
-          {
-            path: 'menu1-2',
-            component: () => import('@/views/nested/menu1/menu1-2'),
-            name: 'Menu1-2',
-            meta: { title: 'Menu1-2' },
-            children: [
-              {
-                path: 'menu1-2-1',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-1'),
-                name: 'Menu1-2-1',
-                meta: { title: 'Menu1-2-1' }
-              },
-              {
-                path: 'menu1-2-2',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-2'),
-                name: 'Menu1-2-2',
-                meta: { title: 'Menu1-2-2' }
-              }
-            ]
-          },
-          {
-            path: 'menu1-3',
-            component: () => import('@/views/nested/menu1/menu1-3'),
-            name: 'Menu1-3',
-            meta: { title: 'Menu1-3' }
-          }
-        ]
-      },
-      {
-        path: 'menu2',
-        component: () => import('@/views/nested/menu2/index'),
-        name: 'Menu2',
-        meta: { title: 'menu2' }
-      }
-    ]
-  },
-
-  {
-    path: 'external-link',
-    component: Layout,
-    children: [
-      {
-        path: 'https://xiangxu999.com/',
-        meta: { title: '外链', icon: 'link' }
-      }
-    ]
-  },
-
-  {
-    path: '/team',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/team/index'),
-        name: 'Team',
-        meta: { title: '团队名片', icon: 'shiyanshi', noCache: true }
-      }
-    ]
-  },
-
-  {
-    path: '/icon',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/icons/index'),
-        name: 'Icons',
-        meta: { title: '图标库', icon: 'icon', noCache: true }
+        path: 'dashboard',
+        name: 'Dashboard',
+        component: () => import('@/views/dashboard/index'),
+        meta: { title: '首页', icon: 'dashboard', affix: true }
       }
     ]
   },
@@ -195,49 +90,29 @@ export const constantRoutes = [
   {
     path: '/components',
     component: Layout,
-    name: 'Components',
-    redirect: '/components/icon-select',
-    meta: { title: '组件库', icon: 'component' },
+    redirect: '/components/icon',
+    name: 'components',
+    meta: {
+      title: '组件管理',
+      icon: 'component'
+    },
     children: [
       {
-        path: 'icon-select',
-        name: 'IconSelect',
-        component: () => import('@/views/components/IconSelectDemo'),
-        meta: { title: '图标选择器', icon: 'icon' }
-      },
-      {
-        path: 'info-card',
-        component: () => import('@/views/components/InfoCardDemo'),
-        name: 'InfoCard',
-        meta: { title: '信息卡片', icon: 'el-icon-postcard' }
-      },
-      {
-        path: 'form-generate',
-        component: () => import('@/views/components/FormGenerateDemo'),
-        name: 'FromGenerate',
-        meta: { title: '表单生成器', icon: 'form' }
-      },
-      {
-        path: 'text-tip',
-        component: () => import('@/views/components/TextTipDemo'),
-        name: 'TextTip',
-        meta: { title: '文字提示框', icon: 'el-icon-info' }
-      },
-      {
-        path: 'verification-captcha',
-        component: () => import('@/views/components/VerificationCaptchaDemo'),
-        name: 'VerificationCaptcha',
-        meta: { title: '滑块验证码', icon: 'validCode' }
+        path: 'icon',
+        component: () => import('@/views/icons/index'),
+        name: 'Icons',
+        meta: { title: '图标库', icon: 'icon', noCache: true }
       }
     ]
   }
 ]
 
-const createRouter = () => new Router({
-  // mode: 'history', // require service support
-  scrollBehavior: () => ({ y: 0 }),
-  routes: constantRoutes
-})
+const createRouter = () =>
+  new Router({
+    // mode: 'history', // require service support
+    scrollBehavior: () => ({ y: 0 }),
+    routes: constantRoutes
+  })
 
 const router = createRouter()
 
@@ -248,7 +123,7 @@ export function resetRouter() {
 
 const originalPush = Router.prototype.push
 Router.prototype.push = function push(location) {
-  return originalPush.call(this, location).catch(err => err)
+  return originalPush.call(this, location).catch((err) => err)
 }
 
 export default router
