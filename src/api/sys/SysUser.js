@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+import qs from 'qs'
 
 /**
  * 获取用户列表
@@ -6,12 +7,11 @@ import request from '@/utils/request'
  * @param current 当前的页数
  * @param size 当前每页的数量
  */
-export function userList(username, current, size) {
+export function userList(searchForm, current, size) {
   return request({
-    url: '/system/user/list',
+    url: '/system/user/list' + '?' + qs.stringify(searchForm, { indices: false }),
     method: 'get',
     params: {
-      username: username,
       current: current,
       size: size
     }
