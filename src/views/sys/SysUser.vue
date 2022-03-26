@@ -3,13 +3,26 @@
     <el-form v-loading="listLoading" :inline="true" size="mini">
       <el-form-item>
         <el-input
-          v-model="searchForm.username"
+          v-model="searchForm.blurry"
           prefix-icon="el-icon-search"
           placeholder="请输入查询的用户名"
           clearable
         />
       </el-form-item>
-
+      <el-form-item>
+        <el-select v-model="searchForm.gender" placeholder="请选择用户的性别">
+          <el-option
+            key="0"
+            label="女"
+            value="0"
+          />
+          <el-option
+            key="1"
+            label="男"
+            value="1"
+          />
+        </el-select>
+      </el-form-item>
       <el-form-item>
         <el-button icon="el-icon-search" type="success" @click="getUserList">搜索</el-button>
       </el-form-item>
@@ -234,7 +247,7 @@ export default {
     },
     getUserList() {
       this.listLoading = true
-      userList(this.searchForm.username, this.current, this.size).then(res => {
+      userList(this.searchForm, this.current, this.size).then(res => {
         this.tableData = res.data.records
         this.size = res.data.size
         this.current = res.data.current
