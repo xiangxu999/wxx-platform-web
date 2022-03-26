@@ -17,6 +17,7 @@ const menuToRoute = (menu, role) => {
       component: menu.component === '' || menu.component === null ? Layout : (resolve) => require([`@/${menu.component}.vue`], resolve),
       name: menu.name,
       // hidden: menu.status === 0,
+      redirect: menu.component === '' || menu.component === null ? 'noRedirect' : '',
       meta: {
         role: role.split(','),
         icon: menu.icon,
