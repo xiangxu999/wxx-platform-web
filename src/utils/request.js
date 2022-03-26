@@ -67,6 +67,12 @@ service.interceptors.response.use(
         })
       } else if (res.code === 200) { // 200: 操作成功
         return res
+      } else { // 其他普通错误
+        Message({
+          message: res.message || 'Error',
+          type: 'error',
+          duration: 5 * 1000
+        })
       }
     } else {
       Message({
