@@ -96,7 +96,7 @@ import Cookies from 'js-cookie'
 import qs from 'qs'
 import md5 from 'js-md5'
 import Background from '@/assets/images/background.jpg'
-import { getCodeImg } from '@/api/auth'
+import { getCodeImg } from '@/api/common/auth'
 export default {
   name: 'Login',
   data() {
@@ -245,7 +245,7 @@ input {
   bottom: 0;
   width: 100%;
   text-align: center;
-  color: #fff;
+  color: #ffffff;
   font-family: Arial, serif;
   font-size: 12px;
   letter-spacing: 1px;
@@ -253,7 +253,7 @@ input {
 .show-pwd {
   right: 10px;
   font-size: 16px;
-  color: #889aa4;
+  color: #707070;
   cursor: pointer;
   user-select: none;
 }
@@ -267,7 +267,7 @@ input {
 .title {
   margin: 0 auto 30px auto;
   text-align: center;
-  color: #fff;
+  color: #707070;
 }
 .login-code {
   width: 33%;
@@ -282,7 +282,7 @@ input {
 
 .login-form {
   border-radius: 6px;
-  background: rgba(0, 0, 0, 0.5);
+  background: #ffffff;
   width: 385px;
   padding: 25px 25px 5px 25px;
   .el-input {
@@ -295,6 +295,7 @@ input {
     height: 39px;
     width: 14px;
     margin-left: 2px;
+    color: #707070de
   }
 }
 </style>
