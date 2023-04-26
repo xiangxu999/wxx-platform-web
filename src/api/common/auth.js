@@ -1,5 +1,9 @@
 import request from '@/utils/request'
 
+/**
+ * 登录
+ * @param data 表单
+ */
 export function login(data) {
   return request({
     url: '/auth/login',
@@ -8,6 +12,10 @@ export function login(data) {
   })
 }
 
+/**
+ * 获取用户信息
+ * @param token token
+ */
 export function getInfo(token) {
   return request({
     url: '/auth/info',
@@ -16,6 +24,9 @@ export function getInfo(token) {
   })
 }
 
+/**
+ * 退出
+ */
 export function logout() {
   return request({
     url: '/auth/logout',
@@ -23,6 +34,9 @@ export function logout() {
   })
 }
 
+/**
+ * 获取验证码
+ */
 export function getCodeImg() {
   return request({
     url: '/auth/code',
