@@ -8,45 +8,28 @@ import router from '@/router'
 
 // 创建一个axios实例
 const service = axios.create({
-  // url = base url + request url
+  // api 的 base_url
   baseURL: process.env.VUE_APP_BASE_API,
-  // send cookies when cross-domain requests
-  // withCredentials: true,
-  timeout: Config.timeout // request timeout
+  // 请求超时时间
+  timeout: Config.timeout
 })
 
-// request interceptor
+// request拦截器
 service.interceptors.request.use(
   config => {
-    // do something before request is sent
-
     if (getToken()) {
-      // let each request carry token
-      // ['Authorization'] is a custom headers key
-      // please modify it according to the actual situation
-      config.headers['Authorization'] = getToken()
+      config.headers['Authorization'] = getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
     }
+    config.headers['Content-Type'] = 'application/json'
     return config
   },
   error => {
-    // do something with request error
-    console.log(error) // for debug
     return Promise.reject(error)
   }
 )
 
-// response interceptor
+// response 拦截器
 service.interceptors.response.use(
-  /**
-   * If you want to get http information such as headers or status
-   * Please return  response => response
-  */
-
-  /**
-   * Determine the request status by custom code
-   * Here is just an example
-   * You can also judge the status by HTTP Status Code
-   */
   response => {
     const res = response.data
     if (res.code) {
